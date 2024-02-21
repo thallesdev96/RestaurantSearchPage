@@ -2,15 +2,20 @@
 const express = require('express');
 const app = express();
 const sequelize = require('./config/database');
-// const restaurantRoutes = require('./routes/restaurantRoutes');
-const restaurantController = require('./controllers/restaurantController');
+const restaurantRoutes = require('./routes/restaurantRoutes');
+const bodyParser = require('body-parser'); // Import body-parser
 
 // Set up view engine
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 // Set up routes
-app.get('/', restaurantController.index);
+app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(bodyParser.json()); // Parse JSON bodies
+
+// Mounting the restaurantRoutes
+app.use('/', restaurantRoutes);
+// app.get('/', restaurantController.index);
 
 
 // Sync models with database
